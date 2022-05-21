@@ -1,16 +1,17 @@
-# jalapeno_spices
+# Jalapeño Spices
 
-Space rack management app.
+A simple Spice Rack Manager.
 
-## Getting Started
+## Dedication
 
-This project is a starting point for a Flutter application.
+This app was requested by my sister and was built to her specifications.
 
-A few resources to get you started if this is your first Flutter project:
+## The problem to be solved
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+"I keep bying duplicate spices, and I have a lot of expired spices."
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## What the app does
+
+* Keep track of the spices and their expiration dates
+* Have quick access to the list while at the supermarket
+
