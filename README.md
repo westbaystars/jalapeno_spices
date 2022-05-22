@@ -8,7 +8,7 @@ This app was requested by my sister and was built to her specifications.
 
 ## The problem to be solved
 
-"I keep bying duplicate spices, and I have a lot of expired spices."
+"I keep buying duplicate spices, and I have a lot of expired spices."
 
 ## What the app does
 
