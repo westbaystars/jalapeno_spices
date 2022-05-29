@@ -14,7 +14,7 @@ class NewSpiceForm extends StatefulWidget {
 }
 
 class _NewSpiceFormState extends State<NewSpiceForm> {
-  Spice spice = new Spice("Onion Powder", DateTime(2022, 9, 22));
+  Map<String, dynamic> spice = new Spice(id: 0, name: "Onion Powder", expiration_date: DateTime(2022, 9, 22)).toMap();
   final _formKey = GlobalKey<FormState>();
   TextEditingController _dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
@@ -26,7 +26,7 @@ class _NewSpiceFormState extends State<NewSpiceForm> {
       child: ListView(
         children: [
           TextFormField(
-            onSaved: (val) => spice.name = val!,
+            onSaved: (val) => spice["name"] = val!,
             decoration: InputDecoration(
               labelText: "Spice Name",
               icon: Icon(Icons.grass)
@@ -42,7 +42,7 @@ class _NewSpiceFormState extends State<NewSpiceForm> {
             child: AbsorbPointer(
               child: TextFormField(
                 onSaved: (val) {
-                  spice.expiration_date = selectedDate;
+                  spice["expiration_date"] = selectedDate;
                 },
                 controller: _dateController,
                 keyboardType: TextInputType.datetime,

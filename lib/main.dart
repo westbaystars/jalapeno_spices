@@ -1,60 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:jalapeno_spices/spice.dart';
-import 'package:jalapeno_spices/new_spice.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+import './spice.dart';
+import './new_spice.dart';
+import './theme.dart';
+import 'data/repository.dart';
+import 'data/sqlite/sqlite_repository.dart';
+import 'models/models.dart';
+import 'models/profile_manager.dart';
+import 'models/spice_manager.dart';
+import 'screens/screen_manager.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final repository = SqliteRepository();
+  await repository.init();
+  runApp(JalapenoSpices(repository: repository));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class JalapenoSpices extends StatelessWidget {
+  final Repository repository;
+  JalapenoSpices({Key? key, required this.repository}) : super(key: key);
+
+  final _profileManager = ProfileManager();
+  final _spiceManager = SpiceManager();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Jalapeño Spcices',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Jalapeño Spcices'),
+    return MultiProvider(
+      providers: [
+        Provider<Repository>(
+          lazy: false,
+          create: (_) => repository,
+          dispose: (_, Repository repository) => repository.close(),
         ),
-        body: Container(
-          // child: Spices(),
-          padding: const EdgeInsets.all(8.0),
-          child: NewSpiceForm(key: GlobalKey<FormState>()),
-        ),
+        ChangeNotifierProvider(create: (context) => _profileManager),
+        ChangeNotifierProvider(create: (context) => _spiceManager),
+      ],
+      child: Consumer<ProfileManager>(
+        builder: (context, profileManager, child) {
+          ThemeData theme;
+          if (profileManager.darkMode) {
+            theme = JalapenoSpiceTheme.dark();
+          } else {
+            theme = JalapenoSpiceTheme.light();
+          }
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Jalapeño Spices',
+            theme: theme,
+            home: const ScreenManager(),
+          );
+        }
       ),
-    );
-  }
-}
-
-class Spices extends StatefulWidget {
-  const Spices({Key? key}) : super(key: key);
-
-  @override
-  State<Spices> createState() => _SpicesState();
-}
-
-class _SpicesState extends State<Spices> {
-  final _spiceList = <Spice>[
-    Spice("Onion Powder", DateTime(2022, 9, 22)),
-    Spice("Jalapeño Powder", DateTime(2023, 3, 22)),
-  ];
-  final _biggerFont = const TextStyle(fontSize: 18);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          if (i.isOdd) return const Divider();
-
-          final index = i ~/ 2;
-          if (index < _spiceList.length)
-            return Text(_spiceList[index].name);
-          else
-            return Text("");
-        },
     );
   }
 }
